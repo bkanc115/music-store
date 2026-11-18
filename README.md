@@ -59,7 +59,8 @@ docker compose up -d --wait db
 
 | Переменная | По умолчанию | Описание |
 |---|---|---|
-| `APP_ENV` | `development` | `development` / `production` (в production cookie только по HTTPS, без автоперезагрузки) |
+| `APP_ENV` | `development` | `development` / `production` (в production нет автоперезагрузки кода) |
+| `SESSION_HTTPS_ONLY` | `false` | cookie сессии только по HTTPS (включить при наличии TLS) |
 | `APP_HOST`, `APP_PORT` | `127.0.0.1`, `8000` | адрес и порт сервера |
 | `DATABASE_URL` | `sqlite:///./musicstore.db` | строка подключения SQLAlchemy |
 | `SECRET_KEY` | заглушка | ключ подписи сессий (**обязательно задать**) |

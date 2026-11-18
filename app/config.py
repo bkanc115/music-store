@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     # Ключ подписи cookie-сессий. Обязательно переопределить в окружении.
     secret_key: str = Field(default=DEFAULT_SECRET_KEY, min_length=8)
     session_max_age: int = 8 * 60 * 60  # секунд
+    # Передавать cookie сессии только по HTTPS (включить, когда перед приложением есть TLS).
+    session_https_only: bool = False
 
     log_level: str = "INFO"
     log_file: str | None = "logs/app.log"
