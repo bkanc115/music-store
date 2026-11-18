@@ -43,7 +43,7 @@ app.add_middleware(
     secret_key=settings.secret_key,
     max_age=settings.session_max_age,
     same_site="lax",
-    https_only=settings.app_env == "production",
+    https_only=settings.session_https_only,
 )
 app.add_middleware(RequestLoggingMiddleware)
 register_error_handlers(app)
