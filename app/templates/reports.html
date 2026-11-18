@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Отчёты — Музыкальный магазин{% endblock %}
+{% block content %}
+<h1>Лидеры продаж</h1>
+{% if top %}
+<table>
+  <thead><tr><th>#</th><th>Диск</th><th>Исполнитель</th><th class="num">Продано, шт.</th><th class="num">Выручка, ₽</th></tr></thead>
+  <tbody>
+  {% for r in top %}
+    <tr><td>{{ loop.index }}</td><td><a href="/discs/{{ r.disc_id }}">{{ r.title }}</a></td><td>{{ r.ensemble }}</td><td class="num">{{ r.copies_sold }}</td><td class="num">{{ r.revenue }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="muted">Продаж пока нет.</p>{% endif %}
+{% endblock %}

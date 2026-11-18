@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Музыкальный магазин{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">♪ Музыкальный магазин</a>
+  <nav>
+    <a href="/">Каталог</a>
+    {% if user %}
+      <a href="/sales">Продажи</a>
+      <a href="/reports">Отчёты</a>
+      {% if user.role == 'admin' %}<a href="/admin">Управление</a>{% endif %}
+      <span class="who">{{ user.username }} ({{ 'администратор' if user.role == 'admin' else 'продавец' }})</span>
+      <button class="link" id="logout">Выйти</button>
+    {% else %}
+      <a href="/login">Войти</a>
+    {% endif %}
+  </nav>
+</header>
+<main>
+  {% block content %}{% endblock %}
+</main>
+<footer>API: <a href="/docs">/docs</a> · состояние: <a href="/health">/health</a></footer>
+<script src="/static/app.js"></script>
+</body>
+</html>

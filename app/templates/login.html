@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Вход — Музыкальный магазин{% endblock %}
+{% block content %}
+<h1>Вход в систему</h1>
+<form class="card login" data-api="/api/auth/login" data-method="POST" data-redirect="{{ next }}">
+  <label>Имя пользователя <input name="username" autocomplete="username" required></label>
+  <label>Пароль <input type="password" name="password" autocomplete="current-password" required></label>
+  <button>Войти</button>
+  <p class="form-error"></p>
+</form>
+{% endblock %}

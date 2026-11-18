@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Каталог дисков</h1>
+<form class="search" method="get" action="/">
+  <input type="search" name="q" value="{{ q }}" placeholder="Поиск по названию">
+  <button>Найти</button>
+</form>
+{% if discs %}
+<table>
+  <thead><tr><th>Название</th><th>Исполнитель</th><th>Год</th><th>Кат. №</th><th class="num">Цена, ₽</th><th class="num">В наличии</th></tr></thead>
+  <tbody>
+  {% for d in discs %}
+    <tr>
+      <td><a href="/discs/{{ d.id }}">{{ d.title }}</a></td>
+      <td>{{ d.ensemble_name }}</td>
+      <td>{{ d.release_year or '' }}</td>
+      <td>{{ d.catalog_number }}</td>
+      <td class="num">{{ d.current_price if d.current_price is not none else '—' }}</td>
+      <td class="num {{ 'muted' if d.stock_quantity == 0 }}">{{ d.stock_quantity }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">Диски не найдены.</p>
+{% endif %}
+{% endblock %}
