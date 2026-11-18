@@ -325,3 +325,12 @@ def top_sellers(
     _: User = Depends(get_current_user),
 ):
     return services.top_sellers(db, limit, date_from, date_to)
+
+
+@router.get("/reports/low-stock", response_model=list[schemas.LowStockOut], tags=["reports"])
+def low_stock(
+    threshold: int = Query(default=3, ge=0, le=1000),
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
+    return services.low_stock(db, threshold)
