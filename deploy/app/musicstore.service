@@ -1,0 +1,41 @@
+[Unit]
+Description=Music Store web application
+Documentation=https://github.com/bkanc115/music-store
+After=network-online.target
+Wants=network-online.target
+# не более 5 перезапусков за 2 минуты, потом служба остаётся в состоянии failed
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Type=exec
+User=@APP_USER@
+Group=@APP_USER@
+WorkingDirectory=@APP_ROOT@/current
+# настройки и секреты хранятся отдельно от кода
+EnvironmentFile=@APP_CONFIG_DIR@/app.env
+Environment=PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+ExecStart=@APP_ROOT@/current/.venv/bin/python -m uvicorn app.main:app --host ${APP_HOST} --port ${APP_PORT} --proxy-headers --no-access-log
+# автоматический перезапуск после аварийного завершения
+Restart=on-failure
+RestartSec=3
+# корректная остановка: SIGTERM, затем 20 с на завершение
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+# ограничения безопасности
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=@APP_LOG_DIR@
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+CapabilityBoundingSet=
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
