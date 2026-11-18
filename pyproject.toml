@@ -1,6 +1,6 @@
 [project]
 name = "music-store"
-version = "0.1.0"
+version = "0.2.0"
 description = "Музыкальный магазин: учёт музыкантов, ансамблей, дисков, цен, продаж и остатков"
 requires-python = ">=3.12"
 

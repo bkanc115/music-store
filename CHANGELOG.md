@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-11-19
+
+### Добавлено
+- Развёртывание на двух Linux-серверах без контейнеров: скрипты подготовки серверов, PostgreSQL с ролями минимальных прав, systemd-служба, ufw, выпуск и откат по тегу, диагностика (#11).
+- Настройка `SESSION_HTTPS_ONLY` (флаг Secure cookie) отдельно от `APP_ENV` (#11).
+
 ## [0.1.0] — 2026-11-19
 
 Первая версия.
@@ -18,5 +24,6 @@
 - Версия приложения и ссылка на репозиторий в подвале страницы (#5, #6).
 - Миграции Alembic, `make verify`, CI на GitHub Actions, правила внесения изменений.
 
-[Unreleased]: https://github.com/bkanc115/music-store/compare/v0.1.0...develop
+[Unreleased]: https://github.com/bkanc115/music-store/compare/v0.2.0...develop
+[0.2.0]: https://github.com/bkanc115/music-store/releases/tag/v0.2.0
 [0.1.0]: https://github.com/bkanc115/music-store/releases/tag/v0.1.0
