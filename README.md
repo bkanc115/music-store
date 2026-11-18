@@ -106,4 +106,5 @@ docs/                описание API и схема данных
 - [Описание API](docs/api.md), интерактивно: `/docs`
 - [Схема данных](docs/schema.md)
 - [Правила внесения изменений](CONTRIBUTING.md)
+- [Развёртывание на Linux-серверах (systemd, PostgreSQL, ufw)](deploy/README.md)
 - [История версий](CHANGELOG.md)
