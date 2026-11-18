@@ -1,0 +1,22 @@
+# Локальное окружение разработки: PostgreSQL в контейнере.
+# Значения берутся из файла .env (см. .env.example).
+services:
+  db:
+    image: postgres:17.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-musicstore}
+      POSTGRES_USER: ${POSTGRES_USER:-musicstore}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Задайте POSTGRES_PASSWORD в .env}
+    ports:
+      - "127.0.0.1:5432:5432"   # только локально, не наружу
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
