@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Продажи — Музыкальный магазин{% endblock %}
+{% block content %}
+<h1>Продажи</h1>
+<form class="card inline" data-api="/api/sales" data-method="POST">
+  <label>Диск
+    <select name="disc_id" data-type="int" required>
+      {% for d in discs %}<option value="{{ d.id }}">{{ d.title }} — {{ d.ensemble_name }} (остаток {{ d.stock_quantity }})</option>{% endfor %}
+    </select>
+  </label>
+  <label>Количество <input type="number" name="quantity" min="1" value="1" required></label>
+  <button>Продать</button>
+  <p class="form-error"></p>
+</form>
+
+<h2>Последние продажи</h2>
+{% if sales %}
+<table>
+  <thead><tr><th>Дата</th><th>Диск</th><th class="num">Кол-во</th><th class="num">Цена, ₽</th><th class="num">Сумма, ₽</th><th>Продавец</th></tr></thead>
+  <tbody>
+  {% for s in sales %}
+    <tr>
+      <td>{{ s.sold_at.strftime('%d.%m.%Y %H:%M') }}</td>
+      <td><a href="/discs/{{ s.disc_id }}">{{ s.disc.title }}</a></td>
+      <td class="num">{{ s.quantity }}</td>
+      <td class="num">{{ s.unit_price }}</td>
+      <td class="num">{{ s.total }}</td>
+      <td>{{ s.seller.username if s.seller else '—' }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="muted">Продаж пока нет.</p>{% endif %}
+{% endblock %}
