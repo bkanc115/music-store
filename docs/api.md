@@ -100,6 +100,7 @@
 | GET | `/api/sales?limit=50` | вход | — |
 | POST | `/api/sales` | вход | `{"disc_id": 1, "quantity": 2}` |
 | GET | `/api/reports/top-sellers?limit=10&date_from=2026-11-01&date_to=2026-11-30` | вход | лидеры продаж |
+| GET | `/api/reports/low-stock?threshold=3` | вход | диски с остатком ≤ threshold, сначала самые дефицитные |
 
 ## Пример сессии (curl)
 
