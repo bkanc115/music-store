@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ disc.title }} — Музыкальный магазин{% endblock %}
+{% block content %}
+<p><a href="/">← к каталогу</a></p>
+<h1>{{ disc.title }}</h1>
+<dl class="props">
+  <dt>Исполнитель</dt><dd>{{ disc.ensemble_name }}</dd>
+  <dt>Каталожный номер</dt><dd>{{ disc.catalog_number }}</dd>
+  <dt>Лейбл</dt><dd>{{ disc.label or '—' }}</dd>
+  <dt>Год выпуска</dt><dd>{{ disc.release_year or '—' }}</dd>
+  <dt>Текущая цена</dt><dd>{{ disc.current_price ~ ' ₽' if disc.current_price is not none else 'не задана' }}</dd>
+  <dt>На складе</dt><dd>{{ disc.stock_quantity }} шт.</dd>
+</dl>
+
+{% if members %}
+<h2>Состав ансамбля</h2>
+<ul>{% for m in members %}<li>{{ m.musician.full_name }}{% if m.role %} — {{ m.role }}{% endif %}</li>{% endfor %}</ul>
+{% endif %}
+
+{% if disc.tracklist %}
+<h2>Произведения</h2>
+<pre class="tracklist">{{ disc.tracklist }}</pre>
+{% endif %}
+
+{% if user %}
+<div class="cards">
+  <form class="card" data-api="/api/sales" data-method="POST">
+    <h3>Оформить продажу</h3>
+    <input type="hidden" name="disc_id" value="{{ disc.id }}" data-type="int">
+    <label>Количество <input type="number" name="quantity" min="1" value="1" required></label>
+    <button>Продать</button>
+    <p class="form-error"></p>
+  </form>
+
+  {% if user.role == 'admin' %}
+  <form class="card" data-api="/api/discs/{{ disc.id }}/prices" data-method="POST">
+    <h3>Новая цена</h3>
+    <label>Цена, ₽ <input type="number" name="amount" step="0.01" min="0.01" required data-type="str"></label>
+    <label>Действует с <input type="date" name="valid_from" required></label>
+    <button>Сохранить</button>
+    <p class="form-error"></p>
+  </form>
+
+  <form class="card" data-api="/api/discs/{{ disc.id }}/stock" data-method="POST">
+    <h3>Остаток</h3>
+    <label>Изменение (+ поступление, − списание) <input type="number" name="delta" required></label>
+    <button>Применить</button>
+    <p class="form-error"></p>
+  </form>
+  {% endif %}
+</div>
+{% endif %}
+
+<h2>История цен</h2>
+{% if prices %}
+<table class="narrow">
+  <thead><tr><th>Действует с</th><th class="num">Цена, ₽</th></tr></thead>
+  <tbody>{% for p in prices %}<tr><td>{{ p.valid_from }}</td><td class="num">{{ p.amount }}</td></tr>{% endfor %}</tbody>
+</table>
+{% else %}<p class="muted">Цены ещё не заданы.</p>{% endif %}
+{% endblock %}
