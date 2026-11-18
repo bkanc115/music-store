@@ -161,6 +161,25 @@ def test_cannot_delete_disc_with_sales(admin_client, disc):
     assert admin_client.delete(f"/api/discs/{disc.id}").status_code == 409
 
 
+def test_low_stock_report(seller_client, disc):
+    [row] = seller_client.get("/api/reports/low-stock?threshold=3").json()
+    assert row == {
+        "disc_id": disc.id,
+        "title": "Тестовый диск",
+        "ensemble": "Тестовый ансамбль",
+        "quantity": 3,
+    }
+    assert seller_client.get("/api/reports/low-stock?threshold=2").json() == []
+
+
+def test_low_stock_report_requires_login(client):
+    assert client.get("/api/reports/low-stock").status_code == 401
+
+
+def test_low_stock_threshold_validation(seller_client):
+    assert seller_client.get("/api/reports/low-stock?threshold=-1").status_code == 422
+
+
 def test_top_sellers_report(seller_client, disc):
     seller_client.post("/api/sales", json={"disc_id": disc.id, "quantity": 2})
     seller_client.post("/api/sales", json={"disc_id": disc.id, "quantity": 1})
