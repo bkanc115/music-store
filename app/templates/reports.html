@@ -12,4 +12,16 @@
   </tbody>
 </table>
 {% else %}<p class="muted">Продаж пока нет.</p>{% endif %}
+
+<h2>Заканчиваются на складе (3 шт. и меньше)</h2>
+{% if low %}
+<table class="narrow">
+  <thead><tr><th>Диск</th><th>Исполнитель</th><th class="num">Остаток</th></tr></thead>
+  <tbody>
+  {% for r in low %}
+    <tr><td><a href="/discs/{{ r.disc_id }}">{{ r.title }}</a></td><td>{{ r.ensemble }}</td><td class="num">{{ r.quantity }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="muted">Все диски в достаточном количестве.</p>{% endif %}
 {% endblock %}

@@ -87,7 +87,13 @@ def reports_page(
 ):
     if user is None:
         return login_redirect(request)
-    return render(request, "reports.html", user, top=services.top_sellers(db, 10))
+    return render(
+        request,
+        "reports.html",
+        user,
+        top=services.top_sellers(db, 10),
+        low=services.low_stock(db, 3),
+    )
 
 
 @router.get("/admin")
