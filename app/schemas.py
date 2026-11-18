@@ -130,6 +130,13 @@ class SaleOut(ORM):
     sold_at: datetime
 
 
+class LowStockOut(BaseModel):
+    disc_id: int
+    title: str
+    ensemble: str
+    quantity: int
+
+
 class TopSellerOut(BaseModel):
     disc_id: int
     title: str

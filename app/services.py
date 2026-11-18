@@ -133,6 +133,22 @@ def register_sale(db: Session, disc_id: int, quantity: int, seller: User | None)
     return sale
 
 
+def low_stock(db: Session, threshold: int = 3) -> list[dict]:
+    """Диски, остаток которых не больше порога; сначала самые дефицитные."""
+    qty = func.coalesce(Stock.quantity, 0)
+    stmt = (
+        select(Disc.id, Disc.title, Ensemble.name, qty.label("quantity"))
+        .join(Ensemble, Ensemble.id == Disc.ensemble_id)
+        .join(Stock, Stock.disc_id == Disc.id, isouter=True)
+        .where(qty <= threshold)
+        .order_by(qty, Disc.title)
+    )
+    return [
+        {"disc_id": r[0], "title": r[1], "ensemble": r[2], "quantity": r[3]}
+        for r in db.execute(stmt)
+    ]
+
+
 def top_sellers(
     db: Session, limit: int = 10, date_from: date | None = None, date_to: date | None = None
 ) -> list[dict]:
