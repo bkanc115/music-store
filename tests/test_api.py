@@ -29,6 +29,12 @@ def test_web_pages_render(client, disc):
     assert r.headers["location"].startswith("/login")
 
 
+def test_footer_shows_version(client):
+    from app import __version__
+
+    assert f"v{__version__}" in client.get("/").text
+
+
 # --- Авторизация -----------------------------------------------------------
 def test_login_wrong_password(client, db_session):
     from tests.conftest import _user
