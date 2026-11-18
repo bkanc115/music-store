@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 
+deploy/secrets.env
+deploy/keys/*.pub
+
 # Python
 __pycache__/
 *.py[cod]
