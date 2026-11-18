@@ -12,13 +12,14 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
-from app import services
+from app import __version__, services
 from app.db import get_db
 from app.models import Ensemble, Musician, Sale, User
 from app.security import get_optional_user
 
 router = APIRouter(include_in_schema=False)
 templates = Jinja2Templates(directory=Path(__file__).resolve().parent.parent / "templates")
+templates.env.globals["app_version"] = __version__
 
 
 def render(request: Request, name: str, user: User | None, **ctx):
